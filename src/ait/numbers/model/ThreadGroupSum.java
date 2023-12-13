@@ -13,6 +13,10 @@ public class ThreadGroupSum extends GroupSum{
     public int computeSum() {
         int res = 0;
 //        System.out.println(res);
+        OneGroupSum[] oneGroupSums = new OneGroupSum[numberGroups.length];
+        for (int i = 0; i < numberGroups.length; i++) {
+            oneGroupSums[i] = new OneGroupSum(numberGroups[i]);
+        }
 
         Thread[] threads = new Thread[numberGroups.length];
         for (int i = 0; i < threads.length; i++) {
@@ -28,15 +32,14 @@ public class ThreadGroupSum extends GroupSum{
             }
         }
 
-        res = Arrays.stream(numberGroups)
-                .map(i -> OneGroupSum(numberGroups[i])::run) // не получается правильно написать поток...
-                .sum(OneGroupSum::getSum);
+//        res = Arrays.stream(numberGroups)
+//                .map(i -> OneGroupSum(numberGroups[i])::run) // не получается правильно написать поток...
+//                .sum(OneGroupSum::getSum);
 
-//        for (int i = 0; i < numberGroups.length; i++) {
-//            OneGroupSum oneGroupSum = new OneGroupSum(numberGroups[i]);
-//            oneGroupSum.run();
-//            res = oneGroupSum.getSum();
-//        }
+        for (int i = 0; i < numberGroups.length; i++) {
+            oneGroupSums[i].run();
+            res = oneGroupSums[i].getSum();
+        }
         //// тоже не получается правильно написать поток...
         // TODO Homework: reduce sum numbers of numberGroups, use Threads
         return res;

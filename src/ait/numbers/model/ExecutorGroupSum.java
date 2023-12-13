@@ -16,6 +16,12 @@ public class ExecutorGroupSum extends GroupSum{
     @Override
     public int computeSum() {
         int poolSize = Runtime.getRuntime().availableProcessors();
+        OneGroupSum[] oneGroupSums = new OneGroupSum[numberGroups.length];
+                ;
+
+        for (int i = 0; i < numberGroups.length; i++) {
+            oneGroupSums[i] = new OneGroupSum(numberGroups[i]);
+        }
 //        System.out.println(poolSize);
         ExecutorService executorService = Executors.newFixedThreadPool(poolSize);
         int res = 0;
@@ -29,15 +35,15 @@ public class ExecutorGroupSum extends GroupSum{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
-        res = Arrays.stream(numberGroups)
-                .map(i -> OneGroupSum(numberGroups[i])::run) // не получается правильно написать поток...
-                .sum(OneGroupSum::getSum);
 
-//        for (int i = 0; i < numberGroups.length; i++) {
-//            OneGroupSum oneGroupSum = new OneGroupSum(numberGroups[i]);
-//            oneGroupSum.run();
-//            res = oneGroupSum.getSum();
-//        }
+//        res = Arrays.stream(oneGroupSums)
+//                .map(OneGroupSum::run) // не получается правильно написать поток...
+//                .sum(OneGroupSum::getSum);
+
+        for (int i = 0; i < numberGroups.length; i++) {
+                oneGroupSums[i].run();
+                res = oneGroupSums[i].getSum();
+        }
         // TODO Homework: reduce sum numbers of numberGroups, use ExecutorService
         return res;
     }
