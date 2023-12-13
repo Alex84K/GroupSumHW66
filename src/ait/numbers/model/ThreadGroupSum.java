@@ -27,11 +27,16 @@ public class ThreadGroupSum extends GroupSum{
                 e.printStackTrace();
             }
         }
-        for (int i = 0; i < numberGroups.length; i++) {
-            OneGroupSum oneGroupSum = new OneGroupSum(numberGroups[i]);
-            oneGroupSum.run();
-            res = oneGroupSum.getSum();
-        }
+
+        res = Arrays.stream(numberGroups)
+                .map(i -> OneGroupSum(numberGroups[i])::run) // не получается правильно написать поток...
+                .sum(OneGroupSum::getSum);
+
+//        for (int i = 0; i < numberGroups.length; i++) {
+//            OneGroupSum oneGroupSum = new OneGroupSum(numberGroups[i]);
+//            oneGroupSum.run();
+//            res = oneGroupSum.getSum();
+//        }
         //// тоже не получается правильно написать поток...
         // TODO Homework: reduce sum numbers of numberGroups, use Threads
         return res;

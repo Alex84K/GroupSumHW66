@@ -29,17 +29,15 @@ public class ExecutorGroupSum extends GroupSum{
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
+        res = Arrays.stream(numberGroups)
+                .map(i -> OneGroupSum(numberGroups[i])::run) // не получается правильно написать поток...
+                .sum(OneGroupSum::getSum);
 
-//        res = Arrays.stream(numberGroups)
-//                .forEach(s -> new OneGroupSum(numberGroups[s]))
-//                .map(s -> new OneGroupSum(s)::run) // не получается правильно написать поток...
-//                .sum(OneGroupSum::getSum);
-
-        for (int i = 0; i < numberGroups.length; i++) {
-            OneGroupSum oneGroupSum = new OneGroupSum(numberGroups[i]);
-            oneGroupSum.run();
-            res = oneGroupSum.getSum();
-        }
+//        for (int i = 0; i < numberGroups.length; i++) {
+//            OneGroupSum oneGroupSum = new OneGroupSum(numberGroups[i]);
+//            oneGroupSum.run();
+//            res = oneGroupSum.getSum();
+//        }
         // TODO Homework: reduce sum numbers of numberGroups, use ExecutorService
         return res;
     }
