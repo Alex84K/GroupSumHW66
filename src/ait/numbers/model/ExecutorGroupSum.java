@@ -17,8 +17,6 @@ public class ExecutorGroupSum extends GroupSum{
     public int computeSum() {
         int poolSize = Runtime.getRuntime().availableProcessors();
         OneGroupSum[] oneGroupSums = new OneGroupSum[numberGroups.length];
-                ;
-
         for (int i = 0; i < numberGroups.length; i++) {
             oneGroupSums[i] = new OneGroupSum(numberGroups[i]);
         }
